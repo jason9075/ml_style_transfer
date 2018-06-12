@@ -118,7 +118,7 @@ content_img = load_img_and_preprocess(
 # since we don't care too much about warping it
 h, w = content_img.shape[1:3]
 style_img = load_img_and_preprocess(
-  'styles/lesdemoisellesdavignon.jpg',
+  'styles/starrynight.jpg',
   (h, w)
 )
 
@@ -187,7 +187,7 @@ def get_loss_and_grads_wrapper(x_vec):
   return l.astype(np.float64), g.flatten().astype(np.float64)
 
 
-final_img = minimize(get_loss_and_grads_wrapper, 1, batch_shape)
+final_img = minimize(get_loss_and_grads_wrapper, 10, batch_shape)
 # plt.imshow(scale_img(final_img))
 # plt.show()
 scipy.misc.imsave('results/result.jpg', final_img)
