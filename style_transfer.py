@@ -18,7 +18,7 @@ from datetime import datetime
 
 STYLE_NAME = "starrynight.jpg"
 CONTENT_NAME = "sydney.jpg"
-EPOCH = 50
+EPOCH = 20
 
 # 創建修改後的VGG 當核心 
 def VGG16_AvgPool(shape):
@@ -119,7 +119,7 @@ vgg = VGG16_AvgPool(shape)
 
 # create the content model
 # we only want 1 output
-content_model = Model(vgg.input, vgg.layers[16].get_output_at(1))
+content_model = Model(vgg.input, vgg.layers[12].get_output_at(1))
 content_target = K.variable(content_model.predict(content_img))
 
 
