@@ -16,6 +16,9 @@ import scipy.misc
 from scipy.optimize import fmin_l_bfgs_b
 from datetime import datetime
 
+STYLE_NAME = "starrynight.jpg"
+CONTENT_NAME = "sydney.jpg"
+
 # 創建修改後的VGG 當核心 
 def VGG16_AvgPool(shape):
   # we want to account for features across the entire image
@@ -29,27 +32,6 @@ def VGG16_AvgPool(shape):
       new_model.add(AveragePooling2D())
     else:
       new_model.add(layer)
-
-  return new_model
-
-def VGG16_AvgPool_CutOff(shape, num_convs):
-  # there are 13 convolutions in total
-  # we can pick any of them as the "output"
-  # of our content model
-
-  if num_convs < 1 or num_convs > 13:
-    print("num_convs must be in the range [1, 13]")
-    return None
-
-  model = VGG16_AvgPool(shape)
-  new_model = Sequential()
-  n = 0
-  for layer in model.layers:
-    if layer.__class__ == Conv2D:
-      n += 1
-    new_model.add(layer)
-    if n >= num_convs:
-      break
 
   return new_model
 
@@ -111,14 +93,14 @@ def unpreprocess(img):
 
 
 content_img = load_img_and_preprocess(
-  'content/sydney.jpg',
+  'content/' + CONTENT_NAME,
 )
 
 # resize the style image
 # since we don't care too much about warping it
 h, w = content_img.shape[1:3]
 style_img = load_img_and_preprocess(
-  'styles/starrynight.jpg',
+  'styles/' + STYLE_NAME,
   (h, w)
 )
 
@@ -136,9 +118,7 @@ vgg = VGG16_AvgPool(shape)
 
 # create the content model
 # we only want 1 output
-# remember you can call vgg.summary() to see a list of layers
-# 1,2,4,5,7-9,11-13,15-17
-content_model = Model(vgg.input, vgg.layers[13].get_output_at(1))
+content_model = Model(vgg.input, vgg.layers[16].get_output_at(1))
 content_target = K.variable(content_model.predict(content_img))
 
 
@@ -158,7 +138,7 @@ style_layers_outputs = [K.variable(y) for y in style_model.predict(style_img)]
 
 # we will assume the weight of the content loss is 1
 # and only weight the style losses
-style_weights = [0.2,0.4,0.3,0.5,0.2]
+style_weights = [0.2, 0.4, 0.3, 0.5, 0.2]
 
 
 
