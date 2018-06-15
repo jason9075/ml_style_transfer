@@ -18,6 +18,7 @@ from datetime import datetime
 
 STYLE_NAME = "starrynight.jpg"
 CONTENT_NAME = "sydney.jpg"
+EPOCH = 50
 
 # 創建修改後的VGG 當核心 
 def VGG16_AvgPool(shape):
@@ -167,7 +168,7 @@ def get_loss_and_grads_wrapper(x_vec):
   return l.astype(np.float64), g.flatten().astype(np.float64)
 
 
-final_img = minimize(get_loss_and_grads_wrapper, 10, batch_shape)
+final_img = minimize(get_loss_and_grads_wrapper, EPOCH, batch_shape)
 # plt.imshow(scale_img(final_img))
 # plt.show()
 scipy.misc.imsave('results/result.jpg', final_img)
