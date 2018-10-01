@@ -17,7 +17,7 @@ from scipy.optimize import fmin_l_bfgs_b
 from datetime import datetime
 
 STYLE_NAME = "starrynight.jpg"
-CONTENT_NAME = "sydney.jpg"
+CONTENT_NAME = "me.jpg"
 EPOCH = 20
 
 # 創建修改後的VGG 當核心 
